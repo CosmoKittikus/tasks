@@ -49,7 +49,15 @@ export function isCorrect(question: Question, answer: string): boolean {
  * be exactly one of the options.
  */
 export function isValid(question: Question, answer: string): boolean {
-    return false;
+    if (question.type === "multiple_choice_question") {
+        if (question.options.some((n: string) => n === answer)) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
 /**
@@ -59,7 +67,9 @@ export function isValid(question: Question, answer: string): boolean {
  * name "My First Question" would become "9: My First Q".
  */
 export function toShortForm(question: Question): string {
-    return "";
+    let first10char: string = question.name.slice(0, 10);
+    let idChar: string = question.id.toString();
+    return idChar + ": " + first10char;
 }
 
 /**
