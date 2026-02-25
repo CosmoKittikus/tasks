@@ -90,7 +90,18 @@ export function toShortForm(question: Question): string {
  * Check the unit tests for more examples of what this looks like!
  */
 export function toMarkdown(question: Question): string {
-    return "";
+    let name: string = question.name;
+    let body: string = question.body;
+    if (question.type === "multiple_choice_question") {
+        let options: string = question.options
+            .reduce((addedString, currentValue) => {
+                return addedString + "- " + currentValue + "\n";
+            }, "")
+            .trim();
+        return "# " + name + "\n" + body + "\n" + options;
+    } else {
+        return "# " + name + "\n" + body;
+    }
 }
 
 /**
@@ -98,6 +109,7 @@ export function toMarkdown(question: Question): string {
  * `newName`.
  */
 export function renameQuestion(question: Question, newName: string): Question {
+    question.name = newName;
     return question;
 }
 
