@@ -6,7 +6,10 @@ import { Question, QuestionType } from "./interfaces/question";
  * that are `published`.
  */
 export function getPublishedQuestions(questions: Question[]): Question[] {
-    return [];
+    let newQuestions: Question[] = questions.filter(
+        (question: Question): boolean => question.published,
+    );
+    return newQuestions;
 }
 
 /**
@@ -24,9 +27,16 @@ export function getNonEmptyQuestions(questions: Question[]): Question[] {
  */
 export function findQuestion(
     questions: Question[],
-    id: number
+    id: number,
 ): Question | null {
-    return null;
+    if (questions.some((n: Question) => n.id === id)) {
+        let location: number = questions.findIndex(
+            (question: Question): boolean => question.id === id,
+        );
+        return questions[location];
+    } else {
+        return null;
+    }
 }
 
 /**
@@ -34,7 +44,10 @@ export function findQuestion(
  * with the given `id`.
  */
 export function removeQuestion(questions: Question[], id: number): Question[] {
-    return [];
+    let newQuestions: Question[] = questions.filter(
+        (question: Question): boolean => question.id != id,
+    );
+    return newQuestions;
 }
 
 /***
@@ -42,14 +55,21 @@ export function removeQuestion(questions: Question[], id: number): Question[] {
  * questions, as an array.
  */
 export function getNames(questions: Question[]): string[] {
-    return [];
+    let questionNames: string[] = questions.map(
+        (question: Question): string => question.name,
+    );
+    return questionNames;
 }
 
 /***
  * Consumes an array of questions and returns the sum total of all their points added together.
  */
 export function sumPoints(questions: Question[]): number {
-    return 0;
+    let sum: number = questions.reduce(
+        (num, question) => num + question.points,
+        0,
+    );
+    return sum;
 }
 
 /***
@@ -114,7 +134,7 @@ export function addNewQuestion(
     questions: Question[],
     id: number,
     name: string,
-    type: QuestionType
+    type: QuestionType,
 ): Question[] {
     return [];
 }
@@ -127,7 +147,7 @@ export function addNewQuestion(
 export function renameQuestionById(
     questions: Question[],
     targetId: number,
-    newName: string
+    newName: string,
 ): Question[] {
     return [];
 }
@@ -142,7 +162,7 @@ export function renameQuestionById(
 export function changeQuestionTypeById(
     questions: Question[],
     targetId: number,
-    newQuestionType: QuestionType
+    newQuestionType: QuestionType,
 ): Question[] {
     return [];
 }
@@ -161,7 +181,7 @@ export function editOption(
     questions: Question[],
     targetId: number,
     targetOptionIndex: number,
-    newOption: string
+    newOption: string,
 ): Question[] {
     return [];
 }
@@ -175,7 +195,7 @@ export function editOption(
 export function duplicateQuestionInArray(
     questions: Question[],
     targetId: number,
-    newId: number
+    newId: number,
 ): Question[] {
     return [];
 }
