@@ -18,7 +18,15 @@ export function getPublishedQuestions(questions: Question[]): Question[] {
  * `expected`, and an empty array for its `options`.
  */
 export function getNonEmptyQuestions(questions: Question[]): Question[] {
-    return [];
+    let newQuestions: Question[] = questions.filter(
+        (question: Question): boolean =>
+            !(
+                question.body === "" &&
+                question.expected === "" &&
+                question.options.length === 0
+            ),
+    );
+    return newQuestions;
 }
 
 /***
@@ -76,7 +84,14 @@ export function sumPoints(questions: Question[]): number {
  * Consumes an array of questions and returns the sum total of the PUBLISHED questions.
  */
 export function sumPublishedPoints(questions: Question[]): number {
-    return 0;
+    let newQuestions: Question[] = questions.filter(
+        (question: Question): boolean => question.published,
+    );
+    let sum: number = newQuestions.reduce(
+        (num, question) => num + question.points,
+        0,
+    );
+    return sum;
 }
 
 /***
@@ -97,7 +112,24 @@ id,name,options,points,published
  * Check the unit tests for more examples!
  */
 export function toCSV(questions: Question[]): string {
-    return "";
+    let bigList: string = questions
+        .reduce(
+            (list, question) =>
+                list +
+                question.id.toString() +
+                "," +
+                question.name +
+                "," +
+                question.options.length.toString() +
+                "," +
+                question.points.toString() +
+                "," +
+                question.published +
+                "\n",
+            "id,name,options,points,published\n",
+        )
+        .trim();
+    return bigList;
 }
 
 /**
