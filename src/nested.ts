@@ -1,5 +1,6 @@
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
+import { makeBlankQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
@@ -165,7 +166,32 @@ export function publishAll(questions: Question[]): Question[] {
  * are the same type. They can be any type, as long as they are all the SAME type.
  */
 export function sameType(questions: Question[]): boolean {
-    return false;
+    let questionTypes: string[] = questions.map(
+        (question: Question): string => question.type,
+    );
+    if (questionTypes[0] === "multiple_choice_question") {
+        if (
+            questionTypes.some(
+                (question: string): boolean =>
+                    question === "short_answer_question",
+            )
+        ) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        if (
+            questionTypes.some(
+                (question: string): boolean =>
+                    question === "multiple_choice_question",
+            )
+        )
+            return false;
+        else {
+            return true;
+        }
+    }
 }
 
 /***
@@ -179,7 +205,14 @@ export function addNewQuestion(
     name: string,
     type: QuestionType,
 ): Question[] {
-    return [];
+    let dummyQuestions: Question[] = questions.map(
+        (question: Question): Question => ({
+            ...question,
+            options: [...question.options],
+        }),
+    );
+    dummyQuestions.push(makeBlankQuestion(id, name, type));
+    return dummyQuestions;
 }
 
 /***
