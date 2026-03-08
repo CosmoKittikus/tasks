@@ -4,27 +4,29 @@ import { Button } from "react-bootstrap";
 export const COLORS = ["red", "blue", "green"];
 const DEFAULT_COLOR_INDEX = 0;
 
-function ChangeColor(): React.JSX.Element {
-    const [colorIndex, setColorIndex] = useState<number>(DEFAULT_COLOR_INDEX);
-    return (
-        <Button
-            onClick={() => {
-                setColorIndex((1 + colorIndex) % COLORS.length);
-            }}
-        >
-            Next Color
-        </Button>
-    );
+interface colorInterface {
+    colorList: string[];
+    colIndex: number;
 }
 
-function ColorPreview(): React.JSX.Element {
+// onClick={() => {setColorIndex((1 + colorIndex) % COLORS.length);}}
+
+function ChangeColor({
+    colorChange,
+}: {
+    colorChange: () => void;
+}): React.JSX.Element {
+    return <Button onClick={colorChange}>Next Color</Button>;
+}
+
+function ColorPreview(props: colorInterface): React.JSX.Element {
     return (
         <div
             data-testid="colored-box"
             style={{
                 width: "50px",
                 height: "50px",
-                backgroundColor: COLORS[DEFAULT_COLOR_INDEX],
+                backgroundColor: props.colorList[props.colIndex],
                 display: "inline-block",
                 verticalAlign: "bottom",
                 marginLeft: "5px",
@@ -34,13 +36,21 @@ function ColorPreview(): React.JSX.Element {
 }
 
 export function ColoredBox(): React.JSX.Element {
+    const [colorIndex, setColorIndex] = useState<number>(DEFAULT_COLOR_INDEX);
     return (
         <div>
             <h3>Colored Box</h3>
-            <span>The current color is: {COLORS[DEFAULT_COLOR_INDEX]}</span>
+            <span>The current color is: {COLORS[colorIndex]}</span>
             <div>
-                <ChangeColor></ChangeColor>
-                <ColorPreview></ColorPreview>
+                <ChangeColor
+                    colorChange={() => {
+                        setColorIndex((1 + colorIndex) % COLORS.length);
+                    }}
+                ></ChangeColor>
+                <ColorPreview
+                    colorList={COLORS}
+                    colIndex={colorIndex}
+                ></ColorPreview>
             </div>
         </div>
     );
